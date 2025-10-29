@@ -1,0 +1,48 @@
+// src/middleware.js
+import { auth } from "./auth"; // This points to your NextAuth setup
+import { NextResponse } from "next/server";
+
+const protectedRoutes = [
+  "/cart",
+  "/api/user/cart",
+  "/userProfile",
+  '/checkout',
+  '/wishlist',
+  '/orders'
+  '/orders/[orderId]',
+  '/success'
+];
+
+export default auth((req) => {
+  const url = req.nextUrl;
+
+  // Check if the current route is protected
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    url.pathname.startsWith(route)
+  );
+
+  // If route is protected and user is NOT authenticated → redirect to login
+  if (isProtectedRoute && !req.auth) {
+    const signInUrl = new URL("/login", req.url);
+    signInUrl.searchParams.set("callbackUrl", url.pathname + url.search);
+    return NextResponse.redirect(signInUrl);
+  }
+
+  // Allow access
+  return NextResponse.next();
+});
+
+// Configure which routes the middleware applies to
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except:
+     * - static files (images, fonts, etc.)
+     * - Next.js internals (_next)
+     * - public assets (favicon, robots.txt, etc.)
+     */
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Also run on all API routes
+    "/(api|trpc)(.*)",
+  ],
+};
