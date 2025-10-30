@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import BakeryShopLoader from '../../../app/SigninSpinner';
+import LoadingSpinner from '../../../app/LoadingSpinner';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -50,7 +50,9 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
-
+ if(loading){
+  return <LoadingSpinner/>
+ }
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-rose-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4 relative overflow-hidden">
       <style jsx global>{`

@@ -51,7 +51,9 @@ export async function POST(request) {
       if (!product || product.quantity < item.quantity) {
         return NextResponse.json(
           {
-            error: `⚠️ Oops! ${product?.name || "Product"} went out of stock during checkout. 
+            error: `⚠️ Oops! ${
+              product?.name || "Product"
+            } went out of stock during checkout. 
             The payment will be automatically refunded within 24 hours`,
           },
           { status: 400 }
