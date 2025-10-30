@@ -1,7 +1,7 @@
 'use client';
 import {useSession} from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { z } from 'zod';
 
@@ -70,16 +70,15 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
-    const { data: session, status } = useSession();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/';
-  
+  const { data: session, status } = useSession();
   const router = useRouter();
+
+  // Redirect if already authenticated
   useEffect(() => {
     if (status === 'authenticated') {
-      router.push(callbackUrl);
+      router.replace('/'); // or router.push('/')
     }
-  }, [status, router, callbackUrl]);
+  }, [status, router]);
   // Calculate password strength
   const calculatePasswordStrength = (password) => {
     let strength = 0;

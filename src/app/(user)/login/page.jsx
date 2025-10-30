@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import LoadingSpinner from '../../../app/LoadingSpinner';
@@ -13,16 +13,16 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-    const { data: session, status } = useSession();
+
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/';
-  
+
+  // Redirect if already authenticated
   useEffect(() => {
     if (status === 'authenticated') {
-      router.replace(callbackUrl);
+      router.replace('/'); // or router.push('/')
     }
-  }, [status, router, callbackUrl]);
+  }, [status, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +41,7 @@ export default function LoginPage() {
           ? 'Invalid email or password' 
           : result.error);
       } else {
-        router.push(callbackUrl);
+        router.push('/');
         router.refresh();
       }
     } catch (err) {

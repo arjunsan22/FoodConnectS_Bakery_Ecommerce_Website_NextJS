@@ -8,7 +8,7 @@ const protectedRoutes = [
   "/userProfile",
   '/checkout',
   '/wishlist',
-  '/orders'
+  '/orders',
   '/orders/[orderId]',
   '/success'
 ];
