@@ -241,7 +241,9 @@ export default function LoginPage() {
 <div className="mb-6"> {/* 👈 This adds space BELOW the button */}  
   <button
     type="button"
-    onClick={() => signIn('google', {  callbackUrl: '/' })}
+    onClick={() => {
+        console.log("Signing in with Google...");
+      signIn('google', {  callbackUrl: '/' })}}
     className="w-full py-3 px-4 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center gap-3 font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors shadow-sm"
   >
     <svg className="w-5 h-5" viewBox="0 0 24 24">
